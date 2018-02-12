@@ -1,0 +1,40 @@
+﻿@model WorkoutsDB.Models.Exercise
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+<h3>Are you sure you want to do this?</h3>
+
+<dl>
+    <dt>
+        @Html.DisplayNameFor(m => m.WorkoutName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.WorkoutName)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(m => m.PrimaryMuscle)
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.PrimaryMuscle)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(m => m.MuscleDescription)
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.MuscleDescription)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(m => m.WorkoutDescription)
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.WorkoutDescription)
+    </dd>
+</dl>
+@using (Html.BeginForm())
+{
+    <input id="Submit1" type="submit" value="Delete Record" />
+    @Html.ActionLink("Back to List", "Details");
+}

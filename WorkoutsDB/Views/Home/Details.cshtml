@@ -1,0 +1,79 @@
+﻿@model IEnumerable<WorkoutsDB.Models.Exercise>
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<h2>Exercises</h2>
+<p>
+    <div class="row">
+        <div class="col-md-2">
+            @Html.ActionLink("Return home", "Index")
+        </div>
+        <div class="col-md-2">
+            @Html.ActionLink("Add a workout", "Create")
+        </div>
+        </div>
+
+    @using (Html.BeginForm())
+    {
+    <p>
+        Primary muscle: @Html.DropDownList("muscleType", "All")
+        Title: @Html.TextBox("searchString")
+        <input type="submit" value="Filter" />
+    </p>
+    }
+    <table>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrimaryMuscle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MuscleDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutDescription)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => item.WorkoutName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(m => item.PrimaryMuscle)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(m => item.MuscleDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.WorkoutDescription)
+                </td>
+                <td>
+                    @if (item.Id > 27)
+                    {
+
+
+                        @Html.ActionLink("Edit Record", "Edit", new { id = item.Id })
+                        @Html.ActionLink("Details of Record", "Details", new { id = item.Id })
+                        @Html.ActionLink("Delete Record", "Delete", new { id = item.Id })
+
+                    }
+
+                </td>
+
+
+
+            </tr>
+        }
+
+    </table>

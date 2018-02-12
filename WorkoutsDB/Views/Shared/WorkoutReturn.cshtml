@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<head>
+    <style type="text/css">
+        /*body{
+            background-color: #354B5E;
+            color: #fff;
+        }*/
+        .bodyMap {
+            background-image: url('../../img/bodyDiagram.png');
+            background-repeat: no-repeat;
+        }
+
+        .auto-style1 {
+            background-image: url('../../img/bodyDiagram.png');
+            background-repeat: no-repeat;
+            height: 533px;
+            width: 575px;
+        }
+
+        #intMap {
+            float: left;
+        }
+
+        #workoutDT {
+            margin-top: 5px;
+        }
+
+        #spacer {
+            height: 200px;
+        }
+
+    </style>
+</head>
+<body ng-mousedown="updateInput()">
+    
+    <div ng-app="myapp">
+        <div ng-controller="WorkoutCtrl">
+            <p>Type a letter in the input field:</p>
+            <div class="row">
+                <div class="col-md-2">
+                    <p><input type="text" id="placeholder" ng-model="test" placeholder="Type a muscle..."></p>
+                    <p><input type="text" id="invisPlaceholder" ng-model="test" placeholder="Type a different muscle..." style="display: none"></p>
+                </div>
+                <div class="col-md-4 col-md-offset-5">
+                    <h3>Muscle name:</h3>
+                        <h4 id="muscle-name" >Muscle</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div id="intMap" class="auto-style1"></div>
+                </div>
+                <div class="col-md-4 col-md-offset-2">
+                    <table class="table table-striped table-bordered table-hover table-checkable datatable">
+                        <thead class="grid-top-panel">
+                            <tr>
+                                <th>Workouts using the selected muscle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="exercise in exercises | filter: test" ng-show="test">
+                                <td>{{exercise.WorkoutName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-striped table-bordered table-hover table-checkable datatable">
+                        <thead class="grid-top-panel">
+                            <tr>
+                                <th>Muscle description </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="exercise in exercises | filter: test | limitTo: 1" ng-show="test">
+                                <td>{{exercise.MuscleDescription}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.ActionLink("Add a workout", "Create")
+                </div>
+                <div class="col-md-2 col-lg-offset-1">
+                    @Html.ActionLink("View all workouts", "Details", "Home")
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/ScriptsNg/Module/app.js"></script>
+    <script src="~/ScriptsNg/Controller/WorkoutController.js"></script>
+    <script src="~/ScriptsNg/Services/WorkoutService.js"></script>
+    <script type="text/javascript">
+        //hidden input which your API will be changing
+        var myInput = document.getElementById("invisPlaceholder");
+        //visible input for the users
+        var myInputVisible = document.getElementById("placeholder");
+        //property mutation for hidden input
+        Object.defineProperty(myInput, "value", {
+            get: function () {
+                return this.getAttribute("value");
+            },
+            set: function (val) {
+                console.log("set");
+
+                //update value of myInputVisible on myInput set
+                myInputVisible.value = val;
+
+                // handle value change here
+                this.setAttribute("value", val);
+
+                //fire the event
+                if ("createEvent" in document) {  // Modern browsers
+                    var evt = document.createEvent("HTMLEvents");
+                    evt.initEvent("change", true, false);
+                    myInput.dispatchEvent(evt);
+                }
+                else {  // IE 8 and below
+                    var evt = document.createEventObject();
+                    myInput.fireEvent("onchange", evt);
+                }
+            }
+        });
+
+        //listen for visible input changes and update hidden
+        myInputVisible.onchange = function (e) {
+            myInput.value = myInputVisible.value;
+        };
+
+        //this is whatever custom event handler you wish to use
+        //it will catch both the programmatic changes (done on myInput directly)
+        //and user's changes (done on myInputVisible)
+        myInput.onchange = function (e) {
+            console.log(myInput.value);
+        };
+    </script>
+    <script src="~/Scripts/raphael.js"></script>
+    <script src="~/Scripts/interactivePicture.js"></script>
+    
+</body>
